@@ -28,12 +28,12 @@
 -- Where applicable
 -- a = amplitude
 -- p = period
-
+local math = math
 local sin, cos, pi, abs, asin = math.sin, math.cos, math.pi, math.abs, math.asin
 local _2pi = 2 * pi
 local _halfpi = 0.5 * pi
-local SoftSpringpi = -3.2*pi
-local Springpi = 2*SoftSpringpi
+local SoftSpringpi = -3.2 * pi
+local Springpi = 2 * SoftSpringpi
 
 local function Linear(t, b, c, d)
 	return c * t / d + b
@@ -41,34 +41,34 @@ end
 
 local function Smooth(t, b, c, d)
 	t = t / d
-	return c * t * t * (3 - 2*t) + b
+	return c * t * t * (3 - 2 * t) + b
 end
 
 local function Smoother(t, b, c, d)
 	t = t / d
-	return c*t*t*t * (t * (6*t - 15) + 10) + b
+	return c * t * t * t * (t * (6 * t - 15) + 10) + b
 end
 
 -- Arceusinator's Easing Functions
 local function RevBack(t, b, c, d)
 	t = 1 - t / d
-	return c*(1 - (sin(t*_halfpi) + (sin(t*pi) * (cos(t*pi) + 1)*0.5))) + b
+	return c * (1 - (sin(t * _halfpi) + (sin(t * pi) * (cos(t * pi) + 1) * 0.5))) + b
 end
 
 local function RidiculousWiggle(t, b, c, d)
 	t = t / d
-	return c*sin(sin(t*pi)*_halfpi) + b
+	return c * sin(sin(t * pi) * _halfpi) + b
 end
 
 -- YellowTide's Easing Functions
 local function Spring(t, b, c, d)
 	t = t / d
-	return (1 + (-2.72^(-6.9*t) * cos(Springpi*t))) * c + b
+	return (1 + (-2.72 ^ (-6.9 * t) * cos(Springpi * t))) * c + b
 end
 
 local function SoftSpring(t, b, c, d)
 	t = t / d
-	return (1 + (-2.72^(-7.5*t) * cos(SoftSpringpi*t))) * c + b
+	return (1 + (-2.72 ^ (-7.5 * t) * cos(SoftSpringpi * t))) * c + b
 end
 -- End of YellowTide's functions
 
@@ -256,13 +256,13 @@ end
 local function InElastic(t, b, c, d, a, p)
 	t = t / d - 1
 	p = p or d * 0.3
-	return t == -1 and b or t == 0 and b + c or (not a or a < abs(c)) and -(c * 2 ^ (10 * t) * sin((t * d - p * .25) * _2pi / p)) + b or -(a * 2 ^ (10 * t) * sin((t * d - p / _2pi * asin(c/a)) * _2pi / p)) + b
+	return t == -1 and b or t == 0 and b + c or (not a or a < abs(c)) and -(c * 2 ^ (10 * t) * sin((t * d - p * 0.25) * _2pi / p)) + b or -(a * 2 ^ (10 * t) * sin((t * d - p / _2pi * asin(c/a)) * _2pi / p)) + b
 end
 
 local function OutElastic(t, b, c, d, a, p)
 	t = t / d
 	p = p or d * 0.3
-	return t == 0 and b or t == 1 and b + c or (not a or a < abs(c)) and c * 2 ^ (-10 * t) * sin((t * d - p * .25) * _2pi / p) + c + b or a * 2 ^ (-10 * t) * sin((t * d - p / _2pi * asin(c / a)) * _2pi / p) + c + b
+	return t == 0 and b or t == 1 and b + c or (not a or a < abs(c)) and c * 2 ^ (-10 * t) * sin((t * d - p * 0.25) * _2pi / p) + c + b or a * 2 ^ (-10 * t) * sin((t * d - p / _2pi * asin(c / a)) * _2pi / p) + c + b
 end
 
 local function InOutElastic(t, b, c, d, a, p)
@@ -276,14 +276,14 @@ local function InOutElastic(t, b, c, d, a, p)
 		return b + c
 	end
 
-	p = p or d * .45
+	p = p or d * 0.45
 	a = a or 0
 
 	local s
 
 	if not a or a < abs(c) then
 		a = c
-		s = p * .25
+		s = p * 0.25
 	else
 		s = p / _2pi * asin(c / a)
 	end
@@ -291,7 +291,7 @@ local function InOutElastic(t, b, c, d, a, p)
 	if t < 1 then
 		return -0.5 * a * 2 ^ (10 * t) * sin((t * d - s) * _2pi / p) + b
 	else
-		return a * 2 ^ (-10 * t) * sin((t * d - s) * _2pi / p ) * 0.5 + c + b
+		return a * 2 ^ (-10 * t) * sin((t * d - s) * _2pi / p) * 0.5 + c + b
 	end
 end
 
@@ -375,16 +375,16 @@ local function OutInBounce(t, b, c, d)
 end
 
 return {
-	Linear = Linear; Spring = Spring; SoftSpring = SoftSpring; RevBack = RevBack; RidiculousWiggle = RidiculousWiggle; Smooth = Smooth; Smoother = Smoother;
+	Linear = Linear, Spring = Spring, SoftSpring = SoftSpring, RevBack = RevBack, RidiculousWiggle = RidiculousWiggle, Smooth = Smooth, Smoother = Smoother,
 
-	InQuad    = InQuad;    OutQuad    = OutQuad;    InOutQuad    = InOutQuad;    OutInQuad    = OutInQuad;
-	InCubic   = InCubic;   OutCubic   = OutCubic;   InOutCubic   = InOutCubic;   OutInCubic   = OutInCubic;
-	InQuart   = InQuart;   OutQuart   = OutQuart;   InOutQuart   = InOutQuart;   OutInQuart   = OutInQuart;
-	InQuint   = InQuint;   OutQuint   = OutQuint;   InOutQuint   = InOutQuint;   OutInQuint   = OutInQuint;
-	InSine    = InSine;    OutSine    = OutSine;    InOutSine    = InOutSine;    OutInSine    = OutInSine;
-	InExpo    = InExpo;    OutExpo    = OutExpo;    InOutExpo    = InOutExpo;    OutInExpo    = OutInExpo;
-	InCirc    = InCirc;    OutCirc    = OutCirc;    InOutCirc    = InOutCirc;    OutInCirc    = OutInCirc;
-	InElastic = InElastic; OutElastic = OutElastic; InOutElastic = InOutElastic; OutInElastic = OutInElastic;
-	InBack    = InBack;    OutBack    = OutBack;    InOutBack    = InOutBack;    OutInBack    = OutInBack;
-	InBounce  = InBounce;  OutBounce  = OutBounce;  InOutBounce  = InOutBounce;  OutInBounce  = OutInBounce;
+	InQuad    = InQuad,    OutQuad    = OutQuad,    InOutQuad    = InOutQuad,    OutInQuad    = OutInQuad,
+	InCubic   = InCubic,   OutCubic   = OutCubic,   InOutCubic   = InOutCubic,   OutInCubic   = OutInCubic,
+	InQuart   = InQuart,   OutQuart   = OutQuart,   InOutQuart   = InOutQuart,   OutInQuart   = OutInQuart,
+	InQuint   = InQuint,   OutQuint   = OutQuint,   InOutQuint   = InOutQuint,   OutInQuint   = OutInQuint,
+	InSine    = InSine,    OutSine    = OutSine,    InOutSine    = InOutSine,    OutInSine    = OutInSine,
+	InExpo    = InExpo,    OutExpo    = OutExpo,    InOutExpo    = InOutExpo,    OutInExpo    = OutInExpo,
+	InCirc    = InCirc,    OutCirc    = OutCirc,    InOutCirc    = InOutCirc,    OutInCirc    = OutInCirc,
+	InElastic = InElastic, OutElastic = OutElastic, InOutElastic = InOutElastic, OutInElastic = OutInElastic,
+	InBack    = InBack,    OutBack    = OutBack,    InOutBack    = InOutBack,    OutInBack    = OutInBack,
+	InBounce  = InBounce,  OutBounce  = OutBounce,  InOutBounce  = InOutBounce,  OutInBounce  = OutInBounce
 }
